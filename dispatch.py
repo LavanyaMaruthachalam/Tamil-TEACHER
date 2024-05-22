@@ -13,7 +13,7 @@ with open(file_path, 'r', encoding='utf-8') as file:
 
 
 
-api_key = "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"
+api_key = "sk-sg8jX65BwoWxML83kT3BlbkFJqrQVJYduAn1CcQbd977C"
 openai.api_key = api_key
 
 
