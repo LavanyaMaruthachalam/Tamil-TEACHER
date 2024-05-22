@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tamil TEACHER</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function chat() {
+            const userInput = document.getElementById("user_input").value;
+            
+            fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `user_input=${userInput}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                let responseArea = document.getElementById("response_area");
+                responseArea.innerHTML = "";
+    
+                if (typeof data === "string") {
+                    responseArea.textContent = data;
+                } else if (Array.isArray(data)) {
+                    data.forEach(item => {
+                        let p = document.createElement("p");
+                        p.innerHTML = `<b>Kural ${item['number']}</b><br>
+                                       Chapter: ${item['chapter']}<br>
+                                       Section: ${item['section']}<br>
+                                       Verse: ${item['kural']}<br>
+                                       Meanings:<br>
+                                       Tamil (Mu.Va): ${item['meanings']['ta_mu_va']}<br>
+                                       Tamil (Salamon): ${item['meanings']['ta_salamon']}<br>
+                                       English: ${item['meanings']['en']}`;
+                        responseArea.appendChild(p);
+                    });
+                } else if (typeof data === "object") {
+                    let item = data;
+                    let p = document.createElement("p");
+                    p.innerHTML = `<b>Kural ${item['number']}</b><br>
+                                   Chapter: ${item['chapter']}<br>
+                                   Section: ${item['section']}<br>
+                                   Verse: ${item['kural']}<br>
+                                   Meanings:<br>
+                                   Tamil (Mu.Va): ${item['meanings']['ta_mu_va']}<br>
+                                   Tamil (Salamon): ${item['meanings']['ta_salamon']}<br>
+                                   English: ${item['meanings']['en']}`;
+                    responseArea.appendChild(p);
+                }
+            });
+        }
+    </script>
+    
+</head>
+<body>
+    <h1>Tamil TEACHER</h1>
+    <input type="text" id="user_input" placeholder="Enter a number or keyword" />
+    <button onclick="chat()">Search</button>
+
+    <div id="response_area"></div>
+</body>
+</html>
